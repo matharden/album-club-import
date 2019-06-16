@@ -29,15 +29,18 @@ data && Object.keys(data).forEach(key => {
   if (typeof nestedContent === "object") {
     Object.keys(nestedContent).forEach(i => {
       const album = nestedContent[i];
+      const docId = 100 - i;
       admin.firestore()
         .collection(key)
-        .doc()
+        .doc(`${docId}`)
         .set({
-          number: 100 - i,
+          number: docId,
+          ratings: 0,
+          avgRatings: 0,
           artist: album.artist,
           title: album.title,
           host: 'hosts/' + hosts[album.host.toLowerCase()],
-          played_on: admin.firestore.Timestamp.fromDate(new Date(album.played_on))
+          playedOn: admin.firestore.Timestamp.fromDate(new Date(album.played_on))
         })
         .then((res) => {
           console.log("Document successfully written!");
